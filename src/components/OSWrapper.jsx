@@ -3,6 +3,7 @@
 import { SettingsContext } from "@/context/settings";
 import { defaultConfig } from "@/config/default";
 import { useContext, useEffect, useState } from "react";
+import Taskbar from "./Taskbar";
 
 const OSWrapper = ({ children }) => {
     const { userSettings, setUserSettings } = useContext(SettingsContext);
@@ -30,7 +31,9 @@ const OSWrapper = ({ children }) => {
                 screen: innerWidth > innerHeight ? "desktop" : null,
                 isAcceptable:
                     innerHeight >= defaultConfig.screen.minHeight &&
-                    innerWidth >= defaultConfig.screen.minWidth,
+                    innerWidth >= defaultConfig.screen.minWidth &&
+                    innerWidth / innerHeight >=
+                        defaultConfig.screen.minAspectRatio,
             }));
         };
         // Run the function once
@@ -39,6 +42,10 @@ const OSWrapper = ({ children }) => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    useEffect(() => {
+        console.log("Updated screenStatus:", screenStatus);
+    }, [screenStatus]);
 
     // Set Loading Screen
     if (screenStatus.screen === "loading") {
@@ -62,9 +69,12 @@ const OSWrapper = ({ children }) => {
 
     return (
         <main
-            className="bg-cover bg-center h-screen w-screen"
+            className="bg-cover bg-center h-screen w-screen relative"
             style={{ backgroundImage: `url(${defaultConfig.wallpaper})` }}
-        ></main>
+        >
+            {children}
+            <Taskbar />
+        </main>
     );
 };
 
