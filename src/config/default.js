@@ -1,7 +1,7 @@
 export const defaultConfig = {
-    aspectRatio: {
-        min: 1.33333,
-        max: 1.77777,
+    screen: {
+        minWidth: 900,
+        minHeight: 600,
     },
     wallpaper: "https://i.ibb.co.com/qYKkpxCr/yaqGvs.jpg",
 };
