@@ -14,5 +14,6 @@
     -   Key
     -   Type
     -   Name
-    -   Position
+    -   Description
+    -   Position: xp and yp : x percentage and y percentage
     -   {extra information}

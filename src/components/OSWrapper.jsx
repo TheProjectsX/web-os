@@ -69,11 +69,11 @@ const OSWrapper = ({ children }) => {
 
     return (
         <main
-            className="bg-cover bg-center h-screen w-screen relative"
+            className="bg-cover bg-center h-screen w-screen relative flex flex-col"
             style={{ backgroundImage: `url(${defaultConfig.wallpaper})` }}
         >
-            {children}
-            <Taskbar />
+            <div className="flex-1">{children}</div>
+            <Taskbar userSettings={userSettings} />
         </main>
     );
 };
