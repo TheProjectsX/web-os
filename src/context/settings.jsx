@@ -8,7 +8,12 @@ export const SettingsProvider = ({ children }) => {
     const [userSettings, setUserSettings] = useState({});
 
     return (
-        <SettingsContext.Provider value={{ userSettings, setUserSettings }}>
+        <SettingsContext.Provider
+            value={{
+                userSettings,
+                setUserSettings,
+            }}
+        >
             {children}
         </SettingsContext.Provider>
     );

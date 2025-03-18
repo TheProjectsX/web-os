@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ApplicationDesktopIcon from "./ApplicationDesktopIcon";
 
-const ApplicationWrapper = ({ application, metadata }) => {
-    const [applicationStatus, setApplicationStatus] = useState("closed");
+const ApplicationWrapper = ({ application, metadata, idx }) => {
+    const [applicationInfo, setApplicationInfo] = useState({
+        status: "closed",
+    });
+
+    const updateApplicationPositions = (positions) => {
+        localStorage.setItem(
+            `${metadata.code}_positions`,
+            JSON.stringify(positions)
+        );
+    };
 
     return (
         <>
             <ApplicationDesktopIcon
-                logo={metadata.logo}
-                name={metadata.name}
-                description={metadata.description}
-                position={{ xp: 0, yp: 0 }}
+                metadata={metadata}
+                idx={idx}
+                updateApplicationPositions={updateApplicationPositions}
             />
         </>
     );

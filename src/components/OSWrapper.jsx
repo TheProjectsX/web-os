@@ -43,10 +43,6 @@ const OSWrapper = ({ children }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    useEffect(() => {
-        console.log("Updated screenStatus:", screenStatus);
-    }, [screenStatus]);
-
     // Set Loading Screen
     if (screenStatus.screen === "loading") {
         return (
