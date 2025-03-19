@@ -14,12 +14,12 @@ export const defaultConfig = {
     application: {
         desktopIcon: {
             widthRem: 4.5,
-            heightRem: 7.25,
+            heightRem: 7,
         },
         taskbarIcon: {},
         window: {
-            widthPercentage: 0.65,
-            heightPercentage: 0.65,
+            widthPercentage: 65,
+            heightPercentage: 65,
         },
         list: [{ application: demo_application, metadata: demo_metadata }],
     },

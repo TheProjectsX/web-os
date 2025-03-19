@@ -5,7 +5,7 @@ import OSWrapper from "@/components/OSWrapper";
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className="font-ubuntu">
+            <body className="font-ubuntu overflow-hidden">
                 <SettingsProvider>
                     <OSWrapper>{children}</OSWrapper>
                 </SettingsProvider>

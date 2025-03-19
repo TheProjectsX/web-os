@@ -3,6 +3,8 @@ import { useState, useRef } from "react";
 const Draggable = ({
     currentPositions,
     onUpdate = (finalPos) => {},
+    runOnDoubleClick = () => {},
+    blurOnActive = false,
     children,
 }) => {
     const applicationRef = useRef(null);
@@ -40,7 +42,10 @@ const Draggable = ({
         <div
             ref={applicationRef}
             onMouseDown={handleMouseDown}
-            className={`w-fit absolute ${dragging ? "opacity-90" : ""}`}
+            onDoubleClick={runOnDoubleClick}
+            className={`w-fit absolute ${
+                dragging && blurOnActive ? "opacity-90" : ""
+            }`}
             style={{
                 left: `${currentPositions.x}px`,
                 top: `${currentPositions.y}px`,

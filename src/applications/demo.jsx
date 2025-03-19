@@ -7,7 +7,11 @@ export const demo_metadata = {
 };
 
 const demo_application = () => {
-    return <div>This is a Demo Application, nothing to see!</div>;
+    return (
+        <div className="p-2 text-white">
+            This is a Demo Application, nothing to see!
+        </div>
+    );
 };
 
 export default demo_application;
