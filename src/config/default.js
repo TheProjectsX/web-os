@@ -1,3 +1,6 @@
+// Load Application Data
+import demo_application, { demo_metadata } from "@/applications/demo";
+
 export const defaultConfig = {
     screen: {
         minWidth: 900,
@@ -9,7 +12,15 @@ export const defaultConfig = {
         position: "center",
     },
     application: {
-        widthPercentage: 0.65,
-        heightPercentage: 0.65,
+        desktopIcon: {
+            widthRem: 4.5,
+            heightRem: 7.25,
+        },
+        taskbarIcon: {},
+        window: {
+            widthPercentage: 0.65,
+            heightPercentage: 0.65,
+        },
+        list: [{ application: demo_application, metadata: demo_metadata }],
     },
 };

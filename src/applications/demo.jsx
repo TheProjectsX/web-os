@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect } from "react";
-
 export const demo_metadata = {
     logo: "/application_logo/genshin_impact_pc_application_logo.png",
     name: "Demo",

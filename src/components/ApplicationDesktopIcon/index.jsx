@@ -10,7 +10,9 @@ const ApplicationDesktopIcon = ({
 
     const currentPositions = calculate_application_positions(
         JSON.parse(localStorage.getItem(`${code}_positions`)) ?? null,
-        idx
+        idx,
+        window.innerWidth,
+        window.innerHeight
     );
 
     return (
@@ -20,15 +22,15 @@ const ApplicationDesktopIcon = ({
         >
             <div
                 title={description}
-                className="flex flex-col items-center p-2 text-white text-center w-fit"
+                className="flex flex-col items-center p-2 gap-1 text-white text-center w-[5rem] hover:bg-gray-300/20 rounded-sm"
             >
                 <img
                     src={logo}
                     alt={name}
                     className="w-14 h-14 select-none pointer-events-none"
                 />
-                <p className="text-sm select-none pointer-events-none">
-                    {name}
+                <p className="text-sm select-none pointer-events-none line-clamp-2 text-center">
+                    {name} something else is also
                 </p>
             </div>
         </Draggable>

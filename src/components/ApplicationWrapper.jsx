@@ -9,9 +9,12 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
     });
 
     const updateApplicationPositions = (positions) => {
+        const x = Number(((positions.x / window.innerWidth) * 100).toFixed(2));
+        const y = Number(((positions.y / window.innerHeight) * 100).toFixed(2));
+
         localStorage.setItem(
             `${metadata.code}_positions`,
-            JSON.stringify(positions)
+            JSON.stringify({ x, y })
         );
     };
 
