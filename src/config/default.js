@@ -25,8 +25,8 @@ export const defaultConfig = {
         },
         list: [
             { application: demo_application, metadata: demo_metadata },
-            { application: demo_application, metadata: demo_metadata },
-            { application: demo_application, metadata: demo_metadata },
+            // { application: demo_application, metadata: demo_metadata },
+            // { application: demo_application, metadata: demo_metadata },
         ],
     },
 };
