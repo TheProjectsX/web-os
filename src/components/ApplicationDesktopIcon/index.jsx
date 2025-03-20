@@ -8,14 +8,6 @@ const ApplicationDesktopIcon = ({
     runOnDoubleClick = () => {},
 }) => {
     const { logo, name, description, code } = metadata;
-
-    const currentPositions = calculate_application_positions(
-        JSON.parse(localStorage.getItem(`${code}_pos`)) ?? null,
-        idx,
-        window.innerWidth,
-        window.innerHeight
-    );
-
     return (
         <div
             title={`${name}\n${description}`}

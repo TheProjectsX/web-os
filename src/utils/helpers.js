@@ -6,7 +6,6 @@ const calculate_application_positions = (positions, idx, width, height) => {
         const x = (width * positions.x) / 100;
         const y = (height * positions.y) / 100;
 
-        console.log("From calc 1: ", { x, y });
         return { x, y };
     } else {
         const remInPx = parseFloat(
@@ -22,8 +21,6 @@ const calculate_application_positions = (positions, idx, width, height) => {
             column * (defaultConfig.application.desktopIcon.widthRem * remInPx);
         const y =
             row * (defaultConfig.application.desktopIcon.heightRem * remInPx);
-
-        console.log("From calc 2: ", { x, y });
 
         return { x, y };
     }
@@ -41,4 +38,10 @@ const focus_on_window = (elm) => {
     elm.style.zIndex = defaultConfig.application.window.zFocus;
 };
 
-export { calculate_application_positions, focus_on_window };
+const get_unique_number = (digits = 5) => {
+    const min = 10 ** (digits - 1);
+    const max = 10 ** digits - 1;
+    return Math.floor(min + (performance.now() % (max - min)));
+};
+
+export { calculate_application_positions, focus_on_window, get_unique_number };

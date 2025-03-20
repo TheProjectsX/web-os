@@ -1,22 +1,34 @@
 "use client";
 
+// Icons
 import { LuMinus } from "react-icons/lu";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
-import { useState } from "react";
-import ApplicationDesktopIcon from "./ApplicationDesktopIcon";
-import { defaultConfig } from "@/config/default";
-import { SettingsContext } from "@/context/settings";
+// React
+import { useContext, useEffect, useState } from "react";
+
+// Custom
 import {
     calculate_application_positions,
     focus_on_window,
+    get_unique_number,
 } from "@/utils/helpers";
+import ApplicationDesktopIcon from "./ApplicationDesktopIcon";
+import { defaultConfig } from "@/config/default";
 
+// RND
 import { Rnd } from "react-rnd";
+import { SettingsContext } from "@/context/settings";
 
 const ApplicationWrapper = ({ application, metadata, idx }) => {
-    const [applicationStatus, setApplicationStatus] = useState("close");
+    const { openedApplications, setOpenedApplications } =
+        useContext(SettingsContext);
+
+    const [applicationInfo, setApplicationInfo] = useState({
+        status: "closed",
+        pid: get_unique_number(),
+    });
 
     const defaultWindowSize = {
         width:
@@ -40,8 +52,66 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         localStorage.setItem(`${metadata.code}_pos`, JSON.stringify({ x, y }));
     };
 
+    // Window Handlers
+    const handleOpenApplication = () => {
+        setApplicationInfo((prev) => ({ ...prev, status: "open" }));
+
+        setOpenedApplications((prev) => [
+            ...prev,
+            { status: "open", pid: applicationInfo.pid, code: metadata.code },
+        ]);
+    };
+
+    const handleCloseApplication = () => {
+        setApplicationInfo((prev) => ({ ...prev, status: "close" }));
+
+        setOpenedApplications((prev) =>
+            prev.filter(
+                (item) =>
+                    item.pid !== applicationInfo.pid &&
+                    item.code !== metadata.code
+            )
+        );
+    };
+
+    const handleMinimizeWindow = () => {
+        setApplicationInfo((prev) => ({ ...prev, status: "minimize" }));
+
+        setOpenedApplications((prev) =>
+            prev.map((item) => {
+                if (
+                    item.pid === applicationInfo.pid &&
+                    item.code == metadata.code
+                ) {
+                    return { ...item, status: "minimize" };
+                } else {
+                    return item;
+                }
+            })
+        );
+    };
+    const handleMaximizeWindow = () => {
+        setApplicationInfo((prev) => ({ ...prev, status: "maximize" }));
+
+        setOpenedApplications((prev) =>
+            prev.map((item) => {
+                if (
+                    item.pid === applicationInfo.pid &&
+                    item.code == metadata.code
+                ) {
+                    return { ...item, status: "maximize." };
+                } else {
+                    return item;
+                }
+            })
+        );
+    };
+
+    useEffect(() => console.table(openedApplications), [openedApplications]);
+
     return (
         <>
+            {/* Application Icon */}
             <Rnd
                 className="!cursor-default"
                 enableResizing={false}
@@ -53,13 +123,13 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                 <ApplicationDesktopIcon
                     metadata={metadata}
                     idx={idx}
-                    runOnDoubleClick={() => setApplicationStatus("open")}
+                    runOnDoubleClick={handleOpenApplication}
                     className="application-icon"
                 />
             </Rnd>
 
             {/* Application Window */}
-            {applicationStatus === "open" && (
+            {applicationInfo.status === "open" && (
                 <Rnd
                     onMouseDown={(e) => {
                         focus_on_window(e.currentTarget);
@@ -84,28 +154,33 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
 
                             {/* Controls */}
                             <div className="">
+                                {/* Minimize Button */}
                                 <button
                                     className="text-white w-12 h-10 cursor-default hover:bg-white/20"
                                     title="Minimize"
+                                    onClick={handleMinimizeWindow}
                                 >
                                     <p className="flex items-center justify-center text-md">
                                         <LuMinus />
                                     </p>
                                 </button>
+
+                                {/* Maximize Button */}
                                 <button
                                     className="text-white w-12 h-10 cursor-default hover:bg-white/20"
                                     title="Maximize"
+                                    onClick={handleMaximizeWindow}
                                 >
                                     <p className="flex items-center justify-center text-md">
                                         <MdCheckBoxOutlineBlank />
                                     </p>
                                 </button>
+
+                                {/* Close Button */}
                                 <button
                                     className="text-white w-12 h-10 cursor-default hover:bg-red-500"
                                     title="Close"
-                                    onClick={() =>
-                                        setApplicationStatus("close")
-                                    }
+                                    onClick={handleCloseApplication}
                                 >
                                     <p className="flex items-center justify-center text-lg">
                                         <RxCross2 />
