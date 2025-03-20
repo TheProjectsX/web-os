@@ -20,7 +20,13 @@ export const defaultConfig = {
         window: {
             widthPercentage: 65,
             heightPercentage: 65,
+            zFocus: 999,
+            zRegular: 800,
         },
-        list: [{ application: demo_application, metadata: demo_metadata }],
+        list: [
+            { application: demo_application, metadata: demo_metadata },
+            { application: demo_application, metadata: demo_metadata },
+            { application: demo_application, metadata: demo_metadata },
+        ],
     },
 };

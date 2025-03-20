@@ -29,4 +29,16 @@ const calculate_application_positions = (positions, idx, width, height) => {
     }
 };
 
-export { calculate_application_positions };
+// Focus on Window
+let lastOpenedWindowElement = null;
+const focus_on_window = (elm) => {
+    if (lastOpenedWindowElement) {
+        lastOpenedWindowElement.style.zIndex =
+            defaultConfig.application.window.zRegular;
+    }
+
+    lastOpenedWindowElement = elm;
+    elm.style.zIndex = defaultConfig.application.window.zFocus;
+};
+
+export { calculate_application_positions, focus_on_window };

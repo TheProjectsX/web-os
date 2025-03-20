@@ -4,6 +4,7 @@ const Draggable = ({
     currentPositions,
     onUpdate = (finalPos) => {},
     runOnDoubleClick = () => {},
+    runOnClick = () => {},
     blurOnActive = false,
     children,
 }) => {
@@ -43,6 +44,7 @@ const Draggable = ({
             ref={applicationRef}
             onMouseDown={handleMouseDown}
             onDoubleClick={runOnDoubleClick}
+            onClick={runOnClick}
             className={`w-fit absolute ${
                 dragging && blurOnActive ? "opacity-90" : ""
             }`}

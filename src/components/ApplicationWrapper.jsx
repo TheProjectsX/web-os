@@ -4,10 +4,12 @@ import { LuMinus } from "react-icons/lu";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ApplicationDesktopIcon from "./ApplicationDesktopIcon";
 import { defaultConfig } from "@/config/default";
 import Draggable from "./ApplicationDesktopIcon/Draggable";
+import { SettingsContext } from "@/context/settings";
+import { focus_on_window } from "@/utils/helpers";
 
 const ApplicationWrapper = ({ application, metadata, idx }) => {
     const [applicationStatus, setApplicationStatus] = useState("close");
@@ -30,7 +32,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
 
             {/* Application Window */}
             {applicationStatus === "open" && (
-                <Draggable currentPositions={{ x: 183, y: 100 }}>
+                <Draggable
+                    runOnClick={(e) => focus_on_window(e.currentTarget)}
+                    currentPositions={{ x: 183, y: 100 }}
+                >
                     <div
                         data-name="application-window"
                         style={{
@@ -47,10 +52,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                 window.innerHeight
                             }px`,
                         }}
-                        className="bg-black/40 backdrop-blur-sm rounded-md overflow-hidden"
+                        className="bg-gray-500 rounded-md overflow-hidden border-[0.5px] border-gray-400"
                     >
                         {/* Top Bar */}
-                        <div className="flex justify-between items-center bg-white/10">
+                        <div className="flex justify-between items-center bg-gray-600">
                             {/* Here can be custom top bar items of the applications */}
                             <div></div>
 
