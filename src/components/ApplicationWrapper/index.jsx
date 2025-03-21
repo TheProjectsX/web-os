@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 // Custom
 import {
     calculate_application_positions,
+    construct_application_status,
     focus_on_window,
     get_unique_number,
 } from "@/utils/helpers";
@@ -62,9 +63,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         setApplicationInfo((prev) => prev.filter((item) => item.pid !== pid));
 
         setOpenedApplications((prev) =>
-            prev.filter(
-                (item) => !(item.pid === pid && item.code === metadata.code)
-            )
+            construct_application_status(prev, "close", pid, metadata.code)
         );
     };
 
@@ -80,13 +79,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         );
 
         setOpenedApplications((prev) =>
-            prev.map((item) => {
-                if (item.pid === pid && item.code == metadata.code) {
-                    return { ...item, status: "minimize" };
-                } else {
-                    return item;
-                }
-            })
+            construct_application_status(prev, "minimize", pid, metadata.code)
         );
     };
     const handleMaximizeWindow = (pid) => {
@@ -101,13 +94,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         );
 
         setOpenedApplications((prev) =>
-            prev.map((item) => {
-                if (item.pid === pid && item.code == metadata.code) {
-                    return { ...item, status: "maximize" };
-                } else {
-                    return item;
-                }
-            })
+            construct_application_status(prev, "maximize", pid, metadata.code)
         );
     };
 
@@ -133,9 +120,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             </Rnd>
 
             {/* Application Window */}
-            {applicationInfo.map(
+            {openedApplications.map(
                 (applicationData) =>
-                    applicationData.status === "open" && (
+                    applicationData.status === "open" &&
+                    applicationData.code === metadata.code && (
                         <Rnd
                             key={applicationData.pid}
                             onMouseDown={(e) => {

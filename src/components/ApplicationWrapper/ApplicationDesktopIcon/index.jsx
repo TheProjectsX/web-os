@@ -1,13 +1,9 @@
-import { calculate_application_positions } from "@/utils/helpers";
-import Draggable from "./Draggable";
-
 const ApplicationDesktopIcon = ({
     metadata,
-    idx,
     className,
     runOnDoubleClick = () => {},
 }) => {
-    const { logo, name, description, code } = metadata;
+    const { logo, name, description } = metadata;
     return (
         <div
             title={`${name}\n${description}`}

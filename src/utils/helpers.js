@@ -44,4 +44,29 @@ const get_unique_number = (digits = 5) => {
     return Math.floor(min + (performance.now() % (max - min)));
 };
 
-export { calculate_application_positions, focus_on_window, get_unique_number };
+// Below function takes List of Objects (openedApplications) and a status, pid and application code. If status "closed", remove the process (pid) else, change it to whatever status there is
+const construct_application_status = (applications, status, pid, code) => {
+    if (status === "close") {
+        return applications.filter(
+            (item) => !(item.pid === pid && item.code === code)
+        );
+    } else {
+        return applications.map((item) => {
+            if (item.pid === pid && item.code == code) {
+                return {
+                    ...item,
+                    status: typeof status === "string" ? status : status(item),
+                };
+            } else {
+                return item;
+            }
+        });
+    }
+};
+
+export {
+    calculate_application_positions,
+    focus_on_window,
+    get_unique_number,
+    construct_application_status,
+};
