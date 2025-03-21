@@ -7,6 +7,7 @@ export const SettingsContext = createContext();
 export const SettingsProvider = ({ children }) => {
     const [userSettings, setUserSettings] = useState({});
     const [openedApplications, setOpenedApplications] = useState([]);
+    const [focusedApp, setFocusedApp] = useState({});
 
     return (
         <SettingsContext.Provider
@@ -15,6 +16,8 @@ export const SettingsProvider = ({ children }) => {
                 setUserSettings,
                 openedApplications,
                 setOpenedApplications,
+                focusedApp,
+                setFocusedApp,
             }}
         >
             {children}

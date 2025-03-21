@@ -19,8 +19,12 @@ import { SettingsContext } from "@/context/settings";
 import ApplicationBody from "./ApplicationBody";
 
 const ApplicationWrapper = ({ application, metadata, idx }) => {
-    const { openedApplications, setOpenedApplications } =
-        useContext(SettingsContext);
+    const {
+        openedApplications,
+        setOpenedApplications,
+        focusedApp,
+        setFocusedApp,
+    } = useContext(SettingsContext);
 
     const [applicationInfo, setApplicationInfo] = useState([]);
 
@@ -52,6 +56,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             status: "open",
             pid: get_unique_number(),
             code: metadata.code,
+            positions: {
+                x: 182 + 12 * applicationInfo.length,
+                y: 100 + 12 * applicationInfo.length,
+            },
         };
 
         setApplicationInfo((prev) => [...prev, newApplication]);
@@ -143,19 +151,32 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                         <Rnd
                             key={applicationData.pid}
                             onMouseDown={(e) => {
+                                setFocusedApp(applicationData);
                                 focus_on_window(e.currentTarget);
                             }}
                             style={{
+                                // zIndex:
+                                //     applicationData.status === "maximize"
+                                //         ? defaultConfig.application.window
+                                //               .zMaximize
+                                //         : openedApplications[
+                                //               openedApplications.length - 1
+                                //           ].pid === applicationData.pid &&
+                                //           openedApplications[
+                                //               openedApplications.length - 1
+                                //           ].code === metadata.code
+                                //         ? defaultConfig.application.window
+                                //               .zFocus
+                                //         : defaultConfig.application.window
+                                //               .zRegular,
                                 zIndex:
                                     applicationData.status === "maximize"
                                         ? defaultConfig.application.window
                                               .zMaximize
-                                        : openedApplications[
-                                              openedApplications.length - 1
-                                          ].pid === applicationData.pid &&
-                                          openedApplications[
-                                              openedApplications.length - 1
-                                          ].code === metadata.code
+                                        : focusedApp.pid ===
+                                              applicationData.pid &&
+                                          focusedApp.code ===
+                                              applicationData.code
                                         ? defaultConfig.application.window
                                               .zFocus
                                         : defaultConfig.application.window
@@ -184,12 +205,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             className="!cursor-default"
                             dragHandleClassName="application-top-bar"
                             default={{
-                                x:
-                                    applicationData.positions?.x ??
-                                    182 + 12 * applicationInfo.length,
-                                y:
-                                    applicationData.positions?.y ??
-                                    100 + 12 * applicationInfo.length,
+                                x: applicationData.positions.x,
+                                y: applicationData.positions.y,
                                 ...defaultWindowSize,
                             }}
                             onDragStop={(e, d) => {
