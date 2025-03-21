@@ -136,20 +136,27 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                     ].pid === applicationData.pid &&
                                     openedApplications[
                                         openedApplications.length - 1
-                                    ].code === metadata.code ? (
-                                        defaultConfig.application.window.zFocus
-                                    ) : (
-                                        <defaultConfig className="application window zre"></defaultConfig>
-                                    ),
+                                    ].code === metadata.code
+                                        ? defaultConfig.application.window
+                                              .zFocus
+                                        : defaultConfig.application.window
+                                              .zRegular,
                             }}
                             minHeight={252}
                             minWidth={392}
                             className="!cursor-default"
                             dragHandleClassName="application-top-bar"
                             default={{
-                                x: 182 + 12 * applicationInfo.length,
-                                y: 100 + 12 * applicationInfo.length,
+                                x:
+                                    applicationData.positions?.x ??
+                                    182 + 12 * applicationInfo.length,
+                                y:
+                                    applicationData.positions?.y ??
+                                    100 + 12 * applicationInfo.length,
                                 ...defaultWindowSize,
+                            }}
+                            onDragStop={(e, d) => {
+                                applicationData.positions = { x: d.x, y: d.y };
                             }}
                         >
                             <ApplicationBody
