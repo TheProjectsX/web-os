@@ -10,7 +10,9 @@ export const defaultConfig = {
     wallpaper: "https://i.ibb.co.com/qYKkpxCr/yaqGvs.jpg",
     taskbar: {
         position: "center",
-        zIndex: 9999,
+        zIndex: 600,
+        heightPX: 52,
+        visibilityStatus: "regular",
     },
     application: {
         desktopIcon: {
@@ -26,6 +28,7 @@ export const defaultConfig = {
             heightPercentage: 65,
             zFocus: 550,
             zRegular: 500,
+            zMaximize: 650,
         },
         list: [
             { application: demo_application, metadata: demo_metadata },

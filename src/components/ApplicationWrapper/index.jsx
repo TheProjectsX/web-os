@@ -86,7 +86,11 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         setApplicationInfo((prev) =>
             prev.map((item) => {
                 if (item.pid === pid) {
-                    return { ...item, status: "maximize" };
+                    return {
+                        ...item,
+                        status:
+                            item.status === "maximize" ? "open" : "maximize",
+                    };
                 } else {
                     return item;
                 }
@@ -94,7 +98,18 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         );
 
         setOpenedApplications((prev) =>
-            construct_application_status(prev, "maximize", pid, metadata.code)
+            construct_application_status(
+                prev,
+                (info) => {
+                    if (info.status === "maximize") {
+                        return "open";
+                    } else {
+                        return "maximize";
+                    }
+                },
+                pid,
+                metadata.code
+            )
         );
     };
 
@@ -122,7 +137,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             {/* Application Window */}
             {openedApplications.map(
                 (applicationData) =>
-                    applicationData.status === "open" &&
+                    (applicationData.status === "open" ||
+                        applicationData.status === "maximize") &&
                     applicationData.code === metadata.code && (
                         <Rnd
                             key={applicationData.pid}
@@ -131,17 +147,38 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             }}
                             style={{
                                 zIndex:
-                                    openedApplications[
-                                        openedApplications.length - 1
-                                    ].pid === applicationData.pid &&
-                                    openedApplications[
-                                        openedApplications.length - 1
-                                    ].code === metadata.code
+                                    applicationData.status === "maximize"
+                                        ? defaultConfig.application.window
+                                              .zMaximize
+                                        : openedApplications[
+                                              openedApplications.length - 1
+                                          ].pid === applicationData.pid &&
+                                          openedApplications[
+                                              openedApplications.length - 1
+                                          ].code === metadata.code
                                         ? defaultConfig.application.window
                                               .zFocus
                                         : defaultConfig.application.window
                                               .zRegular,
                             }}
+                            position={
+                                applicationData.status === "maximize"
+                                    ? { x: 0, y: 0 }
+                                    : null
+                            }
+                            size={
+                                applicationData.status === "maximize"
+                                    ? {
+                                          width: "100vw",
+                                          height:
+                                              defaultConfig.taskbar
+                                                  .visibilityStatus ===
+                                              "regular"
+                                                  ? "100vh"
+                                                  : "100vh",
+                                      }
+                                    : null
+                            }
                             minHeight={252}
                             minWidth={392}
                             className="!cursor-default"
@@ -158,6 +195,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             onDragStop={(e, d) => {
                                 applicationData.positions = { x: d.x, y: d.y };
                             }}
+                            enableResizing={applicationData.status === "open"}
+                            disableDragging={applicationData.status !== "open"}
                         >
                             <ApplicationBody
                                 handleMinimizeWindow={handleMinimizeWindow}
