@@ -1,5 +1,5 @@
 import { defaultConfig } from "@/config/default";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const TaskbarApplicationIcon = ({
     application_info,
@@ -8,6 +8,8 @@ const TaskbarApplicationIcon = ({
     runOnClick,
     currentlyFocused,
 }) => {
+    const [currentApplicationInfo, setCurrentApplicationInfo] =
+        useState(application_info);
     const currentApplicationMetadata = defaultConfig.application.list.find(
         (item) => item.metadata.code === application_info.code
     )?.metadata;
@@ -15,27 +17,29 @@ const TaskbarApplicationIcon = ({
     const openedAndFocused =
         application_list.find(
             (item) =>
-                item.pid === currentlyFocused.pid &&
-                item.code === currentlyFocused.code
+                item.pid === currentlyFocused?.pid &&
+                item.code === currentlyFocused?.code
         )?.status === "open";
 
-    // useEffect(
-    //     () =>
-    //         console.log(
-    //             application_list.find(
-    //                 (item) =>
-    //                     item.pid === currentlyFocused.pid &&
-    //                     item.code === currentlyFocused.code
-    //             )
-    //         ),
-    //     [application_list]
-    // );
+    useEffect(() => {
+        setCurrentApplicationInfo(
+            application_list.find(
+                (item) =>
+                    item.pid === currentlyFocused?.pid &&
+                    item.code === currentlyFocused?.code
+            ) ?? application_info
+        );
+    }, [application_list]);
 
     return (
         <div className="relative group flex flex-col items-center">
             <div
                 title={currentApplicationMetadata.name}
-                onClick={(e) => runOnClick(application_info)}
+                onClick={(e) => {
+                    const opened_app_info = runOnClick(currentApplicationInfo);
+                    if (opened_app_info)
+                        setCurrentApplicationInfo(opened_app_info);
+                }}
                 className={`relative flex flex-col items-center justify-center group pt-0.5 px-1.5 rounded-md hover:bg-white/5 hover:backdrop-blur-md gap-0.5 ${
                     openedAndFocused ? "bg-white/10 backdrop-blur-md" : ""
                 }`}
@@ -64,9 +68,7 @@ const TaskbarApplicationIcon = ({
             {/* Preview of Opened Applications */}
             <div
                 className={`absolute p-2 w-max rounded-md bg-white/30 backdrop-blur-md bottom-14 gap-2 text-sm flex invisible transition-[visibility] delay-300 ${
-                    application_list.length > 1
-                        ? "group-hover:visible"
-                        : "group-hover:visible"
+                    application_list.length > 0 ? "group-hover:visible" : ""
                 }`}
                 hidden={application_list.length === 1}
             >

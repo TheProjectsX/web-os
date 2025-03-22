@@ -3,10 +3,13 @@
 import { SettingsContext } from "@/context/settings";
 import { useContext, useEffect, useState } from "react";
 import TaskbarApplicationIcon from "./TaskbarApplicationIcon";
-import { construct_application_status } from "@/utils/helpers";
+import {
+    construct_application_status,
+    get_unique_number,
+} from "@/utils/helpers";
 import { defaultConfig } from "@/config/default";
 
-const Taskbar = ({ extraApps, userSettings }) => {
+const Taskbar = ({ userSettings }) => {
     const {
         openedApplications,
         setOpenedApplications,
@@ -14,6 +17,7 @@ const Taskbar = ({ extraApps, userSettings }) => {
         setFocusedApp,
     } = useContext(SettingsContext);
     const [dateTime, setDateTime] = useState(new Date());
+    const extraApps = defaultConfig.taskbar?.apps ?? [];
 
     // Handle the Icon click when there is only one window opened
     const handleIconClick = (application_info) => {
@@ -21,6 +25,7 @@ const Taskbar = ({ extraApps, userSettings }) => {
             (item) => item.code === application_info.code
         );
 
+        // Open the Window if Only 1 Window is Opened
         if (applications.length === 1) {
             setOpenedApplications((prev) =>
                 construct_application_status(
@@ -41,6 +46,24 @@ const Taskbar = ({ extraApps, userSettings }) => {
                         item.code === application_info.code
                 )
             );
+        }
+        // Open a new Application Window if None Opened
+        else if (applications.length === 0) {
+            const newApplication = {
+                status: "open",
+                pid: get_unique_number(),
+                code: application_info.code,
+                positions: {
+                    x: 182 + 12 * openedApplications.length,
+                    y: 100 + 12 * openedApplications.length,
+                },
+            };
+
+            setOpenedApplications((prev) => [...prev, newApplication]);
+
+            setFocusedApp(newApplication);
+
+            return newApplication;
         }
     };
 
@@ -63,6 +86,15 @@ const Taskbar = ({ extraApps, userSettings }) => {
             )
         );
     };
+
+    const taskbarApplications = Array.from(
+        new Map(
+            [...openedApplications, ...extraApps].map((item) => [
+                item.code,
+                item,
+            ])
+        ).values()
+    );
 
     // Clock
     useEffect(() => {
@@ -89,13 +121,9 @@ const Taskbar = ({ extraApps, userSettings }) => {
 
             {/* Center */}
             <div className="flex items-center gap-2">
-                {Array.from(
-                    new Map(
-                        openedApplications.map((item) => [item.name, item])
-                    ).values()
-                ).map((item) => (
+                {taskbarApplications.map((item, idx) => (
                     <TaskbarApplicationIcon
-                        key={item.pid}
+                        key={idx}
                         application_info={item}
                         application_list={openedApplications.filter(
                             (item2) => item2.code === item.code

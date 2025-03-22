@@ -88,7 +88,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         );
     };
 
-    useEffect(() => console.table(openedApplications), [openedApplications]);
+    useEffect(() => {
+        console.table(openedApplications);
+        console.log(focusedApp);
+    }, [openedApplications, focusedApp]);
 
     return (
         <>
@@ -125,9 +128,9 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                     applicationData.status === "maximize"
                                         ? defaultConfig.application.window
                                               .zMaximize
-                                        : focusedApp.pid ===
+                                        : focusedApp?.pid ===
                                               applicationData.pid &&
-                                          focusedApp.code ===
+                                          focusedApp?.code ===
                                               applicationData.code
                                         ? defaultConfig.application.window
                                               .zFocus

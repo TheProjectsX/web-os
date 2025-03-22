@@ -13,6 +13,7 @@ export const defaultConfig = {
         zIndex: 600,
         heightPX: 53.2,
         visibilityStatus: "regular",
+        apps: [demo_metadata],
     },
     application: {
         desktopIcon: {
