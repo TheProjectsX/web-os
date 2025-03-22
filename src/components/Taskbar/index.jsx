@@ -102,10 +102,7 @@ const Taskbar = ({ extraApps, userSettings }) => {
                         )}
                         runOnWindowClick={handleWindowClick}
                         runOnClick={handleIconClick}
-                        currentlyFocused={
-                            focusedApp.pid === item.pid &&
-                            focusedApp.code === item.code
-                        }
+                        currentlyFocused={focusedApp}
                     />
                 ))}
             </div>

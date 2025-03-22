@@ -111,7 +111,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
 
             {/* Application Window */}
             {openedApplications.map(
-                (applicationData) =>
+                (applicationData, idx) =>
                     (applicationData.status === "open" ||
                         applicationData.status === "maximize") &&
                     applicationData.code === metadata.code && (
@@ -179,6 +179,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                 handleMaximizeWindow={handleMaximizeWindow}
                                 handleCloseApplication={handleCloseApplication}
                                 pid={applicationData.pid}
+                                title={`${metadata.name} [${idx + 1}]`}
                             >
                                 {application}
                             </ApplicationBody>

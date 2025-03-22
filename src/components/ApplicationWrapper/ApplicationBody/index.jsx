@@ -8,6 +8,7 @@ const ApplicationBody = ({
     handleMaximizeWindow,
     handleCloseApplication,
     pid,
+    title,
     children,
 }) => {
     return (
@@ -22,7 +23,9 @@ const ApplicationBody = ({
                 className="flex justify-between items-center bg-gray-600 application-top-bar"
             >
                 {/* Here can be custom top bar items of the applications */}
-                <div></div>
+                <div className="px-4">
+                    <p className="text-white font-semibold">{title}</p>
+                </div>
 
                 {/* Controls */}
                 <div className="">

@@ -11,7 +11,7 @@ export const defaultConfig = {
     taskbar: {
         position: "center",
         zIndex: 600,
-        heightPX: 52,
+        heightPX: 53.2,
         visibilityStatus: "regular",
     },
     application: {
@@ -20,8 +20,8 @@ export const defaultConfig = {
             heightRem: 7,
         },
         taskbarIcon: {
-            widthRem: 2.5,
-            heightRem: 2.5,
+            widthRem: 2.2,
+            heightRem: 2.2,
         },
         window: {
             widthPercentage: 65,
