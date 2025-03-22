@@ -64,9 +64,30 @@ const construct_application_status = (applications, status, pid, code) => {
     }
 };
 
+// For custom property
+const construct_application_info = (
+    applications,
+    property,
+    value,
+    pid,
+    code
+) => {
+    return applications.map((item) => {
+        if (item.pid === pid && item.code == code) {
+            return {
+                ...item,
+                [property]: typeof value === "function" ? value(item) : value,
+            };
+        } else {
+            return item;
+        }
+    });
+};
+
 export {
     calculate_application_positions,
     focus_on_window,
     get_unique_number,
     construct_application_status,
+    construct_application_info,
 };

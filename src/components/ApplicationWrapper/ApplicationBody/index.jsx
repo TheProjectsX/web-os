@@ -17,6 +17,7 @@ const ApplicationBody = ({
         >
             {/* Top Bar */}
             <div
+                onDoubleClick={() => handleMaximizeWindow(pid)}
                 data-name="application-top-bar"
                 className="flex justify-between items-center bg-gray-600 application-top-bar"
             >

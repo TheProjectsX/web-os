@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 // Custom
 import {
     calculate_application_positions,
+    construct_application_info,
     construct_application_status,
     focus_on_window,
     get_unique_number,
@@ -65,6 +66,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         setApplicationInfo((prev) => [...prev, newApplication]);
 
         setOpenedApplications((prev) => [...prev, newApplication]);
+
+        setFocusedApp(newApplication);
     };
 
     const handleCloseApplication = (pid) => {
@@ -143,8 +146,9 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             </Rnd>
 
             {/* Application Window */}
-            {openedApplications.map(
-                (applicationData) =>
+            {openedApplications.map((applicationData) => {
+                console.log(applicationData);
+                return (
                     (applicationData.status === "open" ||
                         applicationData.status === "maximize") &&
                     applicationData.code === metadata.code && (
@@ -185,7 +189,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             position={
                                 applicationData.status === "maximize"
                                     ? { x: 0, y: 0 }
-                                    : null
+                                    : applicationData.positions
                             }
                             size={
                                 applicationData.status === "maximize"
@@ -198,19 +202,26 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                                   ? "100vh"
                                                   : "100vh",
                                       }
-                                    : null
+                                    : undefined
                             }
                             minHeight={252}
                             minWidth={392}
                             className="!cursor-default"
                             dragHandleClassName="application-top-bar"
                             default={{
-                                x: applicationData.positions.x,
-                                y: applicationData.positions.y,
+                                ...applicationData.positions,
                                 ...defaultWindowSize,
                             }}
                             onDragStop={(e, d) => {
-                                applicationData.positions = { x: d.x, y: d.y };
+                                setOpenedApplications((prev) =>
+                                    construct_application_info(
+                                        prev,
+                                        "positions",
+                                        { x: d.x, y: d.y },
+                                        applicationData.pid,
+                                        applicationData.code
+                                    )
+                                );
                             }}
                             enableResizing={applicationData.status === "open"}
                             disableDragging={applicationData.status !== "open"}
@@ -225,7 +236,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             </ApplicationBody>
                         </Rnd>
                     )
-            )}
+                );
+            })}
         </>
     );
 };

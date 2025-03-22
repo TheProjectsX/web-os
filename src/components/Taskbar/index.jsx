@@ -62,7 +62,10 @@ const Taskbar = ({ extraApps, userSettings }) => {
     return (
         <footer
             className="w-full px-2 py-1 text-white bg-white/10 backdrop-blur-md flex justify-between items-center"
-            style={{ zIndex: defaultConfig.taskbar.zIndex }}
+            style={{
+                zIndex: defaultConfig.taskbar.zIndex,
+                height: `${defaultConfig.taskbar.heightPX}px`,
+            }}
         >
             {userSettings.taskbar?.position === "center" && (
                 <div>

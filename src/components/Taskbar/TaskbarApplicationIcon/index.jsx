@@ -14,7 +14,7 @@ const TaskbarApplicationIcon = ({
         <div
             title={currentApplicationMetadata.name}
             onClick={(e) => runOnClick(application_info)}
-            className="relative flex flex-col items-center group p-0.5 rounded-md hover:bg-white/5 hover:backdrop-blur-md"
+            className="relative flex flex-col items-center justify-center group p-0.5 rounded-md hover:bg-white/5 hover:backdrop-blur-md"
         >
             <img
                 src={currentApplicationMetadata.logo}
@@ -28,8 +28,10 @@ const TaskbarApplicationIcon = ({
 
             {/* Preview of Opened Applications */}
             <div
-                className="absolute p-2 w-max rounded-md bg-white/30 backdrop-blur-md bottom-14 gap-2 text-sm flex invisible group-hover:visible transition-[visibility] duration-500
-"
+                className={`absolute p-2 w-max rounded-md bg-white/30 backdrop-blur-md bottom-14 gap-2 text-sm flex invisible transition-[visibility] duration-500 ${
+                    application_list.length > 1 ? "group-hover:visible" : ""
+                }`}
+                hidden={application_list.length === 1}
             >
                 {application_list.map((item, idx) => (
                     <button
