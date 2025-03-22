@@ -107,7 +107,7 @@ const Taskbar = ({ userSettings }) => {
 
     return (
         <footer
-            className="w-full px-2 py-1 text-white bg-white/10 backdrop-blur-md flex justify-between items-center"
+            className="w-full px-2 py-1 text-white bg-white/10 backdrop-blur-md flex justify-between items-center select-none"
             style={{
                 zIndex: defaultConfig.taskbar.zIndex,
                 height: `${defaultConfig.taskbar.heightPX}px`,

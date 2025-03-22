@@ -64,10 +64,7 @@ const ApplicationBody = ({
                 </div>
             </div>
 
-            <div
-                data-name="application-body"
-                className="select-none pointer-events-none z-50"
-            >
+            <div data-name="application-body" className="z-50 h-full">
                 {children}
             </div>
         </div>

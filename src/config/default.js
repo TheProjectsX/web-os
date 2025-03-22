@@ -1,5 +1,7 @@
 // Load Application Data
+import chrome_application, { chrome_metadata } from "@/applications/chrome";
 import demo_application, { demo_metadata } from "@/applications/demo";
+import notepad_application, { notepad_metadata } from "@/applications/notepad";
 
 export const defaultConfig = {
     screen: {
@@ -33,8 +35,13 @@ export const defaultConfig = {
         },
         list: [
             { application: demo_application, metadata: demo_metadata },
-            // { application: demo_application, metadata: demo_metadata },
-            // { application: demo_application, metadata: demo_metadata },
+            { application: chrome_application, metadata: chrome_metadata },
+            { application: notepad_application, metadata: notepad_metadata },
         ],
+    },
+    localStorage: {
+        keys: {
+            customFiles: "user_custom_files",
+        },
     },
 };
