@@ -5,6 +5,7 @@ const TaskbarApplicationIcon = ({
     application_list,
     runOnWindowClick,
     runOnClick,
+    currentlyFocused,
 }) => {
     const currentApplicationMetadata = defaultConfig.application.list.find(
         (item) => item.metadata.code === application_info.code
@@ -14,7 +15,9 @@ const TaskbarApplicationIcon = ({
         <div
             title={currentApplicationMetadata.name}
             onClick={(e) => runOnClick(application_info)}
-            className="relative flex flex-col items-center justify-center group p-0.5 rounded-md hover:bg-white/5 hover:backdrop-blur-md"
+            className={`relative flex flex-col items-center justify-center group py-0.5 px-1 rounded-md hover:bg-white/5 backdrop-blur-md ${
+                currentlyFocused ? "bg-white/10" : ""
+            }`}
         >
             <img
                 src={currentApplicationMetadata.logo}

@@ -7,8 +7,12 @@ import { construct_application_status } from "@/utils/helpers";
 import { defaultConfig } from "@/config/default";
 
 const Taskbar = ({ extraApps, userSettings }) => {
-    const { openedApplications, setOpenedApplications } =
-        useContext(SettingsContext);
+    const {
+        openedApplications,
+        setOpenedApplications,
+        focusedApp,
+        setFocusedApp,
+    } = useContext(SettingsContext);
     const [dateTime, setDateTime] = useState(new Date());
 
     // Handle the Icon click when there is only one window opened
@@ -21,18 +25,20 @@ const Taskbar = ({ extraApps, userSettings }) => {
             setOpenedApplications((prev) =>
                 construct_application_status(
                     prev,
-                    (info) => {
-                        if (
-                            info.status === "open" ||
-                            info.status === "maximize"
-                        ) {
-                            return "minimize";
-                        } else {
-                            return "open";
-                        }
-                    },
+                    (info) =>
+                        info.status === "open" || info.status === "maximize"
+                            ? "minimize"
+                            : "open",
                     application_info.pid,
                     application_info.code
+                )
+            );
+
+            setFocusedApp(
+                openedApplications.find(
+                    (item) =>
+                        item.pid === application_info.pid &&
+                        item.code === application_info.code
                 )
             );
         }
@@ -46,6 +52,14 @@ const Taskbar = ({ extraApps, userSettings }) => {
                 "open",
                 application_info.pid,
                 application_info.code
+            )
+        );
+
+        setFocusedApp(
+            openedApplications.find(
+                (item) =>
+                    item.pid === application_info.pid &&
+                    item.code === application_info.code
             )
         );
     };
@@ -88,6 +102,10 @@ const Taskbar = ({ extraApps, userSettings }) => {
                         )}
                         runOnWindowClick={handleWindowClick}
                         runOnClick={handleIconClick}
+                        currentlyFocused={
+                            focusedApp.pid === item.pid &&
+                            focusedApp.code === item.code
+                        }
                     />
                 ))}
             </div>

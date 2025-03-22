@@ -27,8 +27,6 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         setFocusedApp,
     } = useContext(SettingsContext);
 
-    const [applicationInfo, setApplicationInfo] = useState([]);
-
     const defaultWindowSize = {
         width:
             (defaultConfig.application.window.widthPercentage / 100) *
@@ -58,12 +56,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             pid: get_unique_number(),
             code: metadata.code,
             positions: {
-                x: 182 + 12 * applicationInfo.length,
-                y: 100 + 12 * applicationInfo.length,
+                x: 182 + 12 * openedApplications.length,
+                y: 100 + 12 * openedApplications.length,
             },
         };
-
-        setApplicationInfo((prev) => [...prev, newApplication]);
 
         setOpenedApplications((prev) => [...prev, newApplication]);
 
@@ -71,53 +67,21 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
     };
 
     const handleCloseApplication = (pid) => {
-        setApplicationInfo((prev) => prev.filter((item) => item.pid !== pid));
-
         setOpenedApplications((prev) =>
             construct_application_status(prev, "close", pid, metadata.code)
         );
     };
 
     const handleMinimizeWindow = (pid) => {
-        setApplicationInfo((prev) =>
-            prev.map((item) => {
-                if (item.pid === pid) {
-                    return { ...item, status: "minimize" };
-                } else {
-                    return item;
-                }
-            })
-        );
-
         setOpenedApplications((prev) =>
             construct_application_status(prev, "minimize", pid, metadata.code)
         );
     };
     const handleMaximizeWindow = (pid) => {
-        setApplicationInfo((prev) =>
-            prev.map((item) => {
-                if (item.pid === pid) {
-                    return {
-                        ...item,
-                        status:
-                            item.status === "maximize" ? "open" : "maximize",
-                    };
-                } else {
-                    return item;
-                }
-            })
-        );
-
         setOpenedApplications((prev) =>
             construct_application_status(
                 prev,
-                (info) => {
-                    if (info.status === "maximize") {
-                        return "open";
-                    } else {
-                        return "maximize";
-                    }
-                },
+                (info) => (info.status === "maximize" ? "open" : "maximize"),
                 pid,
                 metadata.code
             )
@@ -146,9 +110,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             </Rnd>
 
             {/* Application Window */}
-            {openedApplications.map((applicationData) => {
-                console.log(applicationData);
-                return (
+            {openedApplications.map(
+                (applicationData) =>
                     (applicationData.status === "open" ||
                         applicationData.status === "maximize") &&
                     applicationData.code === metadata.code && (
@@ -156,23 +119,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             key={applicationData.pid}
                             onMouseDown={(e) => {
                                 setFocusedApp(applicationData);
-                                focus_on_window(e.currentTarget);
                             }}
                             style={{
-                                // zIndex:
-                                //     applicationData.status === "maximize"
-                                //         ? defaultConfig.application.window
-                                //               .zMaximize
-                                //         : openedApplications[
-                                //               openedApplications.length - 1
-                                //           ].pid === applicationData.pid &&
-                                //           openedApplications[
-                                //               openedApplications.length - 1
-                                //           ].code === metadata.code
-                                //         ? defaultConfig.application.window
-                                //               .zFocus
-                                //         : defaultConfig.application.window
-                                //               .zRegular,
                                 zIndex:
                                     applicationData.status === "maximize"
                                         ? defaultConfig.application.window
@@ -236,8 +184,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                             </ApplicationBody>
                         </Rnd>
                     )
-                );
-            })}
+            )}
         </>
     );
 };
