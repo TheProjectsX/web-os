@@ -71,6 +71,7 @@ const construct_application_info = (
     value,
     pid,
     code
+    // key
 ) => {
     return applications.map((item) => {
         if (item.pid === pid && item.code == code) {

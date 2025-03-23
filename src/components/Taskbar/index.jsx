@@ -36,7 +36,8 @@ const Taskbar = ({ userSettings }) => {
                             ? "minimize"
                             : "open",
                     application_info.pid,
-                    application_info.code
+                    application_info.code,
+                    application_info.key
                 )
             );
 
@@ -75,7 +76,8 @@ const Taskbar = ({ userSettings }) => {
                 prev,
                 "open",
                 application_info.pid,
-                application_info.code
+                application_info.code,
+                application_info.key
             )
         );
 

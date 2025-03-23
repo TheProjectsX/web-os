@@ -19,7 +19,9 @@ import { Rnd } from "react-rnd";
 import { SettingsContext } from "@/context/settings";
 import ApplicationBody from "./ApplicationBody";
 
-const ApplicationWrapper = ({ application, metadata, idx }) => {
+const ApplicationWrapper = ({ children, metadata, idx }) => {
+    // useEffect(() => console.log("From AR:", metadata), []);
+
     const {
         openedApplications,
         setOpenedApplications,
@@ -36,7 +38,9 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
             window.innerHeight,
     };
     const currentIconPositions = calculate_application_positions(
-        JSON.parse(localStorage.getItem(`${metadata.code}_pos`)) ?? null,
+        JSON.parse(
+            localStorage.getItem(`${metadata.code}_${metadata.key}_pos`)
+        ) ?? null,
         idx,
         window.innerWidth,
         window.innerHeight
@@ -46,7 +50,10 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
         const x = Number(((positions.x / window.innerWidth) * 100).toFixed(2));
         const y = Number(((positions.y / window.innerHeight) * 100).toFixed(2));
 
-        localStorage.setItem(`${metadata.code}_pos`, JSON.stringify({ x, y }));
+        localStorage.setItem(
+            `${metadata.code}_${metadata.key}_pos`,
+            JSON.stringify({ x, y })
+        );
     };
 
     // Window Handlers
@@ -59,6 +66,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                 x: 182 + 12 * openedApplications.length,
                 y: 100 + 12 * openedApplications.length,
             },
+            key: metadata.key,
         };
 
         setOpenedApplications((prev) => [...prev, newApplication]);
@@ -68,13 +76,25 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
 
     const handleCloseApplication = (pid) => {
         setOpenedApplications((prev) =>
-            construct_application_status(prev, "close", pid, metadata.code)
+            construct_application_status(
+                prev,
+                "close",
+                pid,
+                metadata.code,
+                metadata.key
+            )
         );
     };
 
     const handleMinimizeWindow = (pid) => {
         setOpenedApplications((prev) =>
-            construct_application_status(prev, "minimize", pid, metadata.code)
+            construct_application_status(
+                prev,
+                "minimize",
+                pid,
+                metadata.code,
+                metadata.key
+            )
         );
     };
     const handleMaximizeWindow = (pid) => {
@@ -83,14 +103,17 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                 prev,
                 (info) => (info.status === "maximize" ? "open" : "maximize"),
                 pid,
-                metadata.code
+                metadata.code,
+                metadata.key
             )
         );
     };
 
+    // useEffect(() => console.log(metadata, idx), [metadata]);
+
     useEffect(() => {
         console.table(openedApplications);
-        console.log(focusedApp);
+        // console.log(focusedApp);
     }, [openedApplications, focusedApp]);
 
     return (
@@ -117,7 +140,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                 (applicationData, idx) =>
                     (applicationData.status === "open" ||
                         applicationData.status === "maximize") &&
-                    applicationData.code === metadata.code && (
+                    applicationData.code === metadata.code &&
+                    applicationData.key === metadata.key && (
                         <Rnd
                             key={applicationData.pid}
                             onMouseDown={(e) => {
@@ -170,7 +194,8 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                         "positions",
                                         { x: d.x, y: d.y },
                                         applicationData.pid,
-                                        applicationData.code
+                                        applicationData.code,
+                                        applicationData.key
                                     )
                                 );
                             }}
@@ -184,7 +209,7 @@ const ApplicationWrapper = ({ application, metadata, idx }) => {
                                 pid={applicationData.pid}
                                 title={`${metadata.name} [${idx + 1}]`}
                             >
-                                {application}
+                                {children}
                             </ApplicationBody>
                         </Rnd>
                     )

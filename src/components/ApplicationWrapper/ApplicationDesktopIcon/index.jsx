@@ -15,7 +15,7 @@ const ApplicationDesktopIcon = ({
                 alt={name}
                 className="w-14 h-14 select-none pointer-events-none"
             />
-            <p className="text-sm select-none pointer-events-none line-clamp-2 leading-4 text-center">
+            <p className="text-sm select-none pointer-events-none line-clamp-2 leading-4 text-center break-all">
                 {name}
             </p>
         </div>

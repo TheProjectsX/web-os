@@ -11,27 +11,22 @@ export default function Home() {
 
     return (
         <div className="w-full h-full relative">
-            {defaultApplications.desktop.map((item, idx) => (
-                <ApplicationWrapper
-                    application={<item.application />}
-                    metadata={item.metadata}
-                    idx={idx}
-                    key={idx}
-                />
-            ))}
+            {defaultApplications.desktop.map(
+                (item, idx) =>
+                    item.view !== false && (
+                        <item.application key={idx} idx={idx} />
+                    )
+            )}
 
             {userCustomFiles.map((item, idx) => {
                 const reqApplication =
                     defaultApplications.app_by_type[item.type];
 
                 return (
-                    <ApplicationWrapper
-                        application={
-                            <reqApplication.application file_metadata={item} />
-                        }
-                        metadata={reqApplication.metadata}
-                        idx={defaultApplications.desktop.length + idx}
+                    <reqApplication.application
                         key={idx}
+                        idx={defaultApplications.desktop.length + idx}
+                        file_metadata={item}
                     />
                 );
             })}
