@@ -6,7 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import Taskbar from "./Taskbar";
 
 const OSWrapper = ({ children }) => {
-    const { userSettings, setUserSettings } = useContext(SettingsContext);
+    const { userSettings, setUserSettings, setUserCustomFiles } =
+        useContext(SettingsContext);
     const [screenStatus, setScreenStatus] = useState({
         screen: "loading",
         isAcceptable: false,
@@ -14,7 +15,12 @@ const OSWrapper = ({ children }) => {
 
     useEffect(() => {
         // Save the user settings to Context API
-        const customSettings = localStorage.getItem("userCustomOSSettings");
+        const customSettings = localStorage.getItem(
+            defaultConfig.localStorage.keys.customSettings
+        );
+        const customFiles = localStorage.getItem(
+            defaultConfig.localStorage.keys.customFiles
+        );
         if (customSettings) {
             setUserSettings({
                 ...defaultConfig,
@@ -22,6 +28,9 @@ const OSWrapper = ({ children }) => {
             });
         } else {
             setUserSettings(defaultConfig);
+        }
+        if (customFiles) {
+            setUserCustomFiles(JSON.parse(customFiles));
         }
 
         // Use Event Listener to check if the screen is acceptable

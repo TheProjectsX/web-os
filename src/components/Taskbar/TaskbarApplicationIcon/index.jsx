@@ -1,3 +1,4 @@
+import { defaultApplications } from "@/config/applications";
 import { defaultConfig } from "@/config/default";
 import { useEffect, useState } from "react";
 
@@ -10,7 +11,7 @@ const TaskbarApplicationIcon = ({
 }) => {
     const [currentApplicationInfo, setCurrentApplicationInfo] =
         useState(application_info);
-    const currentApplicationMetadata = defaultConfig.application.list.find(
+    const currentApplicationMetadata = defaultApplications.desktop.find(
         (item) => item.metadata.code === application_info.code
     )?.metadata;
 

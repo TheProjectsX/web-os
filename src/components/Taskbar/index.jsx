@@ -8,6 +8,7 @@ import {
     get_unique_number,
 } from "@/utils/helpers";
 import { defaultConfig } from "@/config/default";
+import { defaultApplications } from "@/config/applications";
 
 const Taskbar = ({ userSettings }) => {
     const {
@@ -17,7 +18,7 @@ const Taskbar = ({ userSettings }) => {
         setFocusedApp,
     } = useContext(SettingsContext);
     const [dateTime, setDateTime] = useState(new Date());
-    const extraApps = defaultConfig.taskbar?.apps ?? [];
+    const extraApps = defaultApplications.taskbar ?? [];
 
     // Handle the Icon click when there is only one window opened
     const handleIconClick = (application_info) => {

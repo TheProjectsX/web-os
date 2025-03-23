@@ -1,8 +1,4 @@
 // Load Application Data
-import chrome_application, { chrome_metadata } from "@/applications/chrome";
-import demo_application, { demo_metadata } from "@/applications/demo";
-import notepad_application, { notepad_metadata } from "@/applications/notepad";
-
 export const defaultConfig = {
     screen: {
         minWidth: 900,
@@ -15,7 +11,6 @@ export const defaultConfig = {
         zIndex: 600,
         heightPX: 53.2,
         visibilityStatus: "regular",
-        apps: [demo_metadata],
     },
     application: {
         desktopIcon: {
@@ -33,15 +28,11 @@ export const defaultConfig = {
             zRegular: 500,
             zMaximize: 650,
         },
-        list: [
-            { application: demo_application, metadata: demo_metadata },
-            { application: chrome_application, metadata: chrome_metadata },
-            { application: notepad_application, metadata: notepad_metadata },
-        ],
     },
     localStorage: {
         keys: {
             customFiles: "user_custom_files",
+            customSettings: "user_custom_settings",
         },
     },
 };
