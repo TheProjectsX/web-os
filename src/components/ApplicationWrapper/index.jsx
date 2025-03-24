@@ -8,7 +8,6 @@ import {
     calculate_application_positions,
     construct_application_info,
     construct_application_status,
-    focus_on_window,
     get_unique_number,
 } from "@/utils/helpers";
 import ApplicationDesktopIcon from "./ApplicationDesktopIcon";
@@ -19,7 +18,14 @@ import { Rnd } from "react-rnd";
 import { SettingsContext } from "@/context/settings";
 import ApplicationBody from "./ApplicationBody";
 
-const ApplicationWrapper = ({ children, metadata, idx }) => {
+const ApplicationWrapper = ({
+    children,
+    metadata,
+    runOnMinimize = () => {},
+    runOnMaximize = (status) => {},
+    runOnClose = () => {},
+    idx,
+}) => {
     // useEffect(() => console.log("From AR:", metadata), []);
 
     const {
@@ -84,6 +90,8 @@ const ApplicationWrapper = ({ children, metadata, idx }) => {
                 metadata.key
             )
         );
+
+        runOnClose();
     };
 
     const handleMinimizeWindow = (pid) => {
@@ -96,17 +104,26 @@ const ApplicationWrapper = ({ children, metadata, idx }) => {
                 metadata.key
             )
         );
+
+        runOnMinimize();
     };
     const handleMaximizeWindow = (pid) => {
+        let status = "";
+
         setOpenedApplications((prev) =>
             construct_application_status(
                 prev,
-                (info) => (info.status === "maximize" ? "open" : "maximize"),
+                (info) => {
+                    status = info.status === "maximize" ? "open" : "maximize";
+                    return status;
+                },
                 pid,
                 metadata.code,
                 metadata.key
             )
         );
+
+        runOnMaximize(status);
     };
 
     // useEffect(() => console.log(metadata, idx), [metadata]);

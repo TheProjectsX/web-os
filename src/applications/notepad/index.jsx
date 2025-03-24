@@ -2,7 +2,8 @@
 
 import ApplicationWrapper from "@/components/ApplicationWrapper";
 import { defaultConfig } from "@/config/default";
-import { useRef, useState } from "react";
+import { SettingsContext } from "@/context/settings";
+import { useContext, useRef, useState } from "react";
 
 // Notepad Metadata
 export const notepad_metadata = {
@@ -16,10 +17,11 @@ export const notepad_metadata = {
 
 // Notepad Application
 const notepad_application = ({ file_metadata, idx }) => {
+    const { setUserCustomFiles, setOpenedApplications } =
+        useContext(SettingsContext);
     // console.log(file_metadata, idx);
 
     const [currentFileData, setCurrentFileData] = useState(file_metadata ?? {});
-    const areaRef = useRef(null);
 
     const metadata = { ...notepad_metadata };
     if (file_metadata) {
@@ -33,13 +35,14 @@ const notepad_application = ({ file_metadata, idx }) => {
         const pastData = JSON.parse(
             localStorage.getItem(defaultConfig.localStorage.keys.customFiles)
         );
-        const fileName = prompt("Enter File Name:> ", `${Date.now()}.txt`);
+        const fileName = prompt("Enter File Name: ", `${Date.now()}`);
+        if (!fileName) return;
 
         const currentData = {
             name: fileName,
             type: "txt",
             time: Date.now(),
-            content: areaRef.current.value,
+            content: currentFileData.content,
         };
 
         const newData = [...(pastData ?? []), currentData];
@@ -48,6 +51,8 @@ const notepad_application = ({ file_metadata, idx }) => {
             defaultConfig.localStorage.keys.customFiles,
             JSON.stringify(newData)
         );
+
+        setUserCustomFiles(newData);
     };
 
     const handleDeleteDocument = () => {
@@ -56,16 +61,27 @@ const notepad_application = ({ file_metadata, idx }) => {
         );
 
         const newData = pastData.filter((item) => item.time !== metadata.time);
-        console.log("🚀 ~ handleDeleteDocument ~ newData:", newData);
 
         localStorage.setItem(
             defaultConfig.localStorage.keys.customFiles,
             JSON.stringify(newData)
         );
+
+        setUserCustomFiles(newData);
+        setOpenedApplications((prev) =>
+            prev.filter(
+                (item) =>
+                    item.key !== metadata.key && item.code !== metadata.code
+            )
+        );
     };
 
     return (
-        <ApplicationWrapper idx={idx} metadata={metadata}>
+        <ApplicationWrapper
+            idx={idx}
+            metadata={metadata}
+            runOnClose={() => setCurrentFileData({})}
+        >
             <div className="h-full">
                 {/* Controls */}
                 <div className="bg-gray-600 text-white flex border-t items-center px-1.5 py-1">
@@ -103,7 +119,6 @@ const notepad_application = ({ file_metadata, idx }) => {
                             content: e.target.value,
                         }))
                     }
-                    ref={areaRef}
                 ></textarea>
             </div>
         </ApplicationWrapper>
