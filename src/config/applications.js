@@ -5,12 +5,12 @@ import notepad_application, { notepad_metadata } from "@/applications/notepad";
 export const defaultApplications = {
     desktop: [
         { application: demo_application, metadata: demo_metadata },
-        // { application: chrome_application, metadata: chrome_metadata },
-        {
-            application: notepad_application,
-            metadata: notepad_metadata,
-            view: true,
-        },
+        { application: chrome_application, metadata: chrome_metadata },
+        // {
+        //     application: notepad_application,
+        //     metadata: notepad_metadata,
+        //     view: true,
+        // },
     ],
     // taskbar: [demo_metadata],
     app_by_type: {
