@@ -3,7 +3,7 @@
 import { SettingsContext } from "@/context/settings";
 import { defaultConfig } from "@/config/default";
 import { useContext, useEffect, useState } from "react";
-import Taskbar from "./Taskbar";
+import Taskbar from "../Taskbar";
 
 const OSWrapper = ({ children }) => {
     const { userSettings, setUserSettings, setUserCustomFiles } =

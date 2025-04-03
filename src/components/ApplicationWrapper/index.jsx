@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 // Custom
 import {
@@ -198,7 +198,7 @@ const ApplicationWrapper = ({
                             }
                             minHeight={252}
                             minWidth={392}
-                            className="!cursor-default"
+                            className="!cursor-default transition-all duration-200 ease-in-out"
                             dragHandleClassName="application-top-bar"
                             default={{
                                 ...applicationData.positions,
