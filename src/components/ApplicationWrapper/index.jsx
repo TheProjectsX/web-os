@@ -69,8 +69,8 @@ const ApplicationWrapper = ({
             pid: get_unique_number(),
             code: metadata.code,
             positions: {
-                x: 182 + 12 * openedApplications.length,
-                y: 100 + 12 * openedApplications.length,
+                x: (window.innerWidth - defaultWindowSize.width) / 2,
+                y: (window.innerHeight - defaultWindowSize.height) / 2,
             },
             key: metadata.key,
         };
@@ -198,7 +198,11 @@ const ApplicationWrapper = ({
                             }
                             minHeight={252}
                             minWidth={392}
-                            className="!cursor-default transition-all duration-200 ease-in-out"
+                            className={`!cursor-default ${
+                                applicationData.status === "maximize"
+                                    ? "transition-all duration-200 ease-in-out"
+                                    : ""
+                            }`}
                             dragHandleClassName="application-top-bar"
                             default={{
                                 ...applicationData.positions,
