@@ -13,6 +13,8 @@ export const notepad_metadata = {
     type: "application",
     code: "notepad_application",
     key: "original",
+    resize: true,
+    draggable: true,
 };
 
 // Notepad Application

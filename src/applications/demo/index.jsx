@@ -7,6 +7,8 @@ export const demo_metadata = {
     type: "application",
     code: "demo_application",
     key: "original",
+    resize: true,
+    draggable: true,
 };
 
 const demo_application = ({ idx }) => {

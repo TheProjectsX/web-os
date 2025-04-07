@@ -37,12 +37,17 @@ const ApplicationWrapper = ({
 
     const defaultWindowSize = {
         width:
-            (defaultConfig.application.window.widthPercentage / 100) *
+            ((metadata.size?.width ??
+                defaultConfig.application.window.widthPercentage) /
+                100) *
             window.innerWidth,
         height:
-            (defaultConfig.application.window.heightPercentage / 100) *
+            ((metadata.size?.height ??
+                defaultConfig.application.window.heightPercentage) /
+                100) *
             window.innerHeight,
     };
+
     const currentIconPositions = calculate_application_positions(
         JSON.parse(
             localStorage.getItem(`${metadata.code}_${metadata.key}_pos`)
@@ -196,8 +201,18 @@ const ApplicationWrapper = ({
                                       }
                                     : undefined
                             }
-                            minHeight={252}
-                            minWidth={392}
+                            minHeight={
+                                metadata.size?.height
+                                    ? (metadata.size?.height / 100) *
+                                      window.innerHeight
+                                    : 252
+                            }
+                            minWidth={
+                                metadata.size?.width
+                                    ? (metadata.size?.width / 100) *
+                                      window.innerWidth
+                                    : 352
+                            }
                             className={`!cursor-default ${
                                 applicationData.status === "maximize"
                                     ? "transition-all duration-200 ease-in-out"
@@ -220,8 +235,16 @@ const ApplicationWrapper = ({
                                     )
                                 );
                             }}
-                            enableResizing={applicationData.status === "open"}
-                            disableDragging={applicationData.status !== "open"}
+                            enableResizing={
+                                metadata.resize
+                                    ? applicationData.status === "open"
+                                    : false
+                            }
+                            disableDragging={
+                                metadata.draggable
+                                    ? applicationData.status !== "open"
+                                    : true
+                            }
                         >
                             <ApplicationBody
                                 handleMinimizeWindow={handleMinimizeWindow}

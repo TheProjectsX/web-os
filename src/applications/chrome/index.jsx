@@ -8,6 +8,8 @@ export const chrome_metadata = {
     type: "application",
     code: "chrome_application",
     key: "original",
+    resize: true,
+    draggable: true,
 };
 
 const chrome_application = ({ idx }) => {

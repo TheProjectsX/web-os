@@ -14,7 +14,7 @@ const ApplicationBody = ({
     return (
         <div
             data-name="application-window"
-            className="bg-gray-500 rounded-md overflow-hidden border-[0.5px] border-gray-400 w-full h-full"
+            className="bg-gray-500 rounded-md overflow-hidden border-[0.5px] border-gray-400 w-full h-full flex flex-col"
         >
             {/* Top Bar */}
             <div
