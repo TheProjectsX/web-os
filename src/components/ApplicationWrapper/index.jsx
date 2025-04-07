@@ -252,6 +252,7 @@ const ApplicationWrapper = ({
                                 handleCloseApplication={handleCloseApplication}
                                 pid={applicationData.pid}
                                 title={`${metadata.name} [${idx + 1}]`}
+                                scroll={metadata.scroll}
                             >
                                 {children}
                             </ApplicationBody>

@@ -10,6 +10,7 @@ const ApplicationBody = ({
     pid,
     title,
     children,
+    scroll = {},
 }) => {
     return (
         <div
@@ -64,7 +65,12 @@ const ApplicationBody = ({
                 </div>
             </div>
 
-            <div data-name="application-body" className="z-50 h-full">
+            <div
+                data-name="application-body"
+                className={`z-50 h-full scrollbar-thin ${
+                    scroll?.x ? "overflow-x-scroll" : ""
+                } ${scroll?.y ? "overflow-y-scroll" : ""}`}
+            >
                 {children}
             </div>
         </div>
